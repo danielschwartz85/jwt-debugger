@@ -2,6 +2,12 @@ import * as jose from 'jose'
 
 async function calculateJwt() {
   setPayload()
+  const isVerified = await isJwtVerified()
+  if (!isVerified) {
+    document.getElementById('decoded').classList.add('error')
+  } else {
+    document.getElementById('decoded').classList.remove('error')
+  }
 }
 
 async function setEncodedJwt() {
