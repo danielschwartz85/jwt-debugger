@@ -2,12 +2,7 @@ import * as jose from 'jose'
 
 async function calculateJwt() {
   setPayload()
-  const isVerified = await isJwtVerified()
-  if (isVerified) {
-    markAsVerified()
-  } else {
-    markAsNotVerified()
-  }
+  // await markJwtVerification()
 }
 
 async function setEncodedJwt() {
@@ -26,7 +21,7 @@ async function setEncodedJwt() {
     .setProtectedHeader({ alg: 'HS256', cty: 'JWT' })
     .sign(enc.encode(secret))
   document.getElementById('encoded').value = jwt
-  await markJwtVerification()
+  // await markJwtVerification()
 }
 
 async function markJwtVerification() {
@@ -82,7 +77,7 @@ async function verifyJwt(token, secret) {
 
 document.addEventListener('DOMContentLoaded', () => {
   calculateJwt()
-  document.getElementById('secret').addEventListener("input", (event) => calculateJwt());
+  document.getElementById('secret').addEventListener("input", (event) => setEncodedJwt());
   document.getElementById('encoded').addEventListener("input", (event) => calculateJwt());
   document.getElementById('decoded').addEventListener("input", (event) => setEncodedJwt());
 });
