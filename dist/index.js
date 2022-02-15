@@ -4620,12 +4620,6 @@ __webpack_require__.r(__webpack_exports__);
 
 async function calculateJwt() {
   setPayload()
-  const isVerified = await isJwtVerified()
-  if (isVerified) {
-    markAsVerified()
-  } else {
-    markAsNotVerified()
-  }
 }
 
 async function setEncodedJwt() {
@@ -4633,9 +4627,10 @@ async function setEncodedJwt() {
   let parsed
   try {
     parsed = JSON.parse(payload)
+    document.getElementById('decoded').classList.remove('error')
   } catch (e) { 
     // wait for payload to be valid json
-    markAsNotVerified()
+    document.getElementById('decoded').classList.add('error')
     return 
   }
   const secret = document.getElementById('secret').value
@@ -4644,26 +4639,6 @@ async function setEncodedJwt() {
     .setProtectedHeader({ alg: 'HS256', cty: 'JWT' })
     .sign(enc.encode(secret))
   document.getElementById('encoded').value = jwt
-  await markJwtVerification()
-}
-
-async function markJwtVerification() {
-  const isVerified = await isJwtVerified()
-  if (isVerified) {
-    markAsVerified()
-  } else {
-    markAsNotVerified()
-  }
-}
-
-function markAsNotVerified() {
-  document.getElementById('decoded').classList.add('not-verified')
-  document.getElementById('decoded').classList.remove('verified')
-}
-
-function markAsVerified() {
-  document.getElementById('decoded').classList.add('verified')
-  document.getElementById('decoded').classList.remove('not-verified')
 }
 
 function setPayload() {
@@ -4700,8 +4675,8 @@ async function verifyJwt(token, secret) {
 
 document.addEventListener('DOMContentLoaded', () => {
   calculateJwt()
-  document.getElementById('secret').addEventListener("input", (event) => calculateJwt());
   document.getElementById('encoded').addEventListener("input", (event) => calculateJwt());
+  document.getElementById('secret').addEventListener("input", (event) => setEncodedJwt());
   document.getElementById('decoded').addEventListener("input", (event) => setEncodedJwt());
 });
 })();

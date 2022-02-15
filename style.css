@@ -5,15 +5,11 @@
 .decoded {
   width: 50%;
   height: 200px;
-  background-color: #d97c82;
 }
 .secret {
   width: 30%;
 }
-.verified {
-  background-color: #88c588;
-}
-.not-verified {
+.error {
   background-color: #d97c82;
 }
 #encoded-jwt-container, #decoded-jwt-container {
